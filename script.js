@@ -39,7 +39,7 @@ function rentMovie(element) {
 
 }
 
-// Switch in new function - cleaner code
+// Statement in new function - cleaner code
 
 function showHTMLRating(movieName, showRating) {
 
@@ -59,7 +59,7 @@ function showHTMLRating(movieName, showRating) {
                                     <br>
                                     <button class="btn" onclick="getRating(this)">Rate!</button>`
     }
-    else if (movieName.indexOf('Endgame') > -1) {
+    else if (movieName.includes('Endgame')) {
         showRating.innerHTML = `<div class="rate">
                                         <input type="radio" id="star5-end" name="rate-end" value="5" />
                                         <label for="star5-end" title="text">5 stars</label>
@@ -75,7 +75,7 @@ function showHTMLRating(movieName, showRating) {
                                     <br>
                                     <button class="btn" onclick="getRating(this)">Rate!</button>`
     }
-    else if (movieName.indexOf('Casino Royale') > -1) {
+    else if (movieName.includes('Casino Royale')) {
         showRating.innerHTML = `<div class="rate">
                                     <input type="radio" id="star5-roy" name="rate-roy" value="5" />
                                     <label for="star5-roy" title="text">5 stars</label>
@@ -91,7 +91,7 @@ function showHTMLRating(movieName, showRating) {
                                 <br>
                                 <button class="btn" onclick="getRating(this)">Rate!</button>`
     }
-    else if (movieName.indexOf('Spider-Man') > -1) {
+    else if (movieName.includes('Spider-Man')) {
         showRating.innerHTML = `<div class="rate">
                                     <input type="radio" id="star5-man" name="rate-man" value="5" />
                                     <label for="star5-man" title="text">5 stars</label>
