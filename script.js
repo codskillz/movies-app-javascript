@@ -56,7 +56,7 @@ function showHTMLRating(movieName, showRating) {
                                         <label for="star1-${(movieName.substring(0, 3)).toLowerCase()}" title="text">1 star</label>
                                     </div>
                                     <br>
-                                    <button class="btn" onclick="getRating2(this)">Rate!</button>`
+                                    <button class="btn" onclick="getRating(this)">Rate!</button>`
     }
 }
 
