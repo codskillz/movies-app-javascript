@@ -81,3 +81,46 @@ function getRating(element) {
     }
 
 }
+
+function addMovie() {
+    let element = document.createElement('div');
+    element.classList.add('add-movie');
+
+    element.innerHTML = `<label for="movie-name">Movie name:</label><br>
+                         <input type="text" id="movie-name" name="new-movie" placeholder="Movie name" size="30" required><br>
+                         <label for="movie-year">Year released:</label><br>
+                         <input type="text" id="movie-year" name="new-movie" placeholder="Year" size="30" required><br>
+                         <label for="movie-length">Movie length:</label><br>
+                         <input type="text" id="movie-length" name="new-movie" placeholder="Length" size="30" required><br>
+                         <label for="movie-price">Movie price ($):</label><br>
+                         <input type="text" id="movie-price" name="new-movie" placeholder="Price" size="30" required><br><br>
+                         <label for="movie-image">Upload movie cover:</label><br>
+                         <input type="file" id="file-input" name="new-movie" value="Upload image" required><br>
+                         <button type="button" onclick="uploadFile()">Upload file</button><br><br>
+                         <button class="btn" onclick="submitMovie()">Submit movie!</button>
+                         `
+
+    document.body.appendChild(element);
+}
+
+function submitMovie() {
+    let element = document.querySelector('.add-movie');
+    let movieName = element.querySelector('input[id="movie-name"]').value;
+    let movieYear = element.querySelector('input[id="movie-year"]').value;
+    let movieLength = element.querySelector('input[id="movie-length"]').value;
+    let moviePrice = element.querySelector('input[id="movie-price"]').value;
+
+    let moviesDiv = document.querySelector('.movies');
+    let newDiv = document.createElement('div');
+    newDiv.innerHTML = `<img src="images/endgame.jpg">
+                        <div class="content">
+                            <h3>${movieName} (${movieYear})</h3>
+                            <p class="price">$${moviePrice}</p>
+                            <p class="mov-length">${movieLength} min.</p>
+                        </div>
+                        <button class="btn" onclick="rentMovie(this)">Watch</button>
+                        <div class="rate-section"></div>`;
+    newDiv.classList.add('single-movie');
+
+    moviesDiv.appendChild(newDiv);
+}

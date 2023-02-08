@@ -18,6 +18,11 @@ h3 {
     color: white;
 }
 
+.single-movie .content h3 {
+    display: flex;
+    flex-direction: column;
+}
+
 h1 {
     text-align: center;
     margin-bottom: 15px;
@@ -98,4 +103,8 @@ h1 {
 .rate>input:checked~label:hover~label,
 .rate>label:hover~input:checked~label {
     color: #c59b08;
+}
+
+.add-movie label {
+    color: white;
 }
