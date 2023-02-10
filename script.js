@@ -43,21 +43,37 @@ function rentMovie(element) {
 
 function showHTMLRating(movieName, showRating) {
     if (movieName.includes(movieName.substring(0, movieName.length))) {
+
+        let result = getRandomMovieName(movieName, 5);
+
         showRating.innerHTML = `<div class="rate">
-                                        <input type="radio" id="star5-${(movieName.substring(0, 3)).toLowerCase()}" name="rate-${(movieName.substring(0, 3)).toLowerCase()}" value="5" />
-                                        <label for="star5-${(movieName.substring(0, 3)).toLowerCase()}" title="text">5 stars</label>
-                                        <input type="radio" id="star4-${(movieName.substring(0, 3)).toLowerCase()}" name="rate-${(movieName.substring(0, 3)).toLowerCase()}" value="4" />
-                                        <label for="star4-${(movieName.substring(0, 3)).toLowerCase()}" title="text">4 stars</label>
-                                        <input type="radio" id="star3-${(movieName.substring(0, 3)).toLowerCase()}" name="rate-${(movieName.substring(0, 3)).toLowerCase()}" value="3" />
-                                        <label for="star3-${(movieName.substring(0, 3)).toLowerCase()}" title="text">3 stars</label>
-                                        <input type="radio" id="star2-${(movieName.substring(0, 3)).toLowerCase()}" name="rate-${(movieName.substring(0, 3)).toLowerCase()}" value="2" />
-                                        <label for="star2-${(movieName.substring(0, 3)).toLowerCase()}" title="text">2 stars</label>
-                                        <input type="radio" id="star1-${(movieName.substring(0, 3)).toLowerCase()}" name="rate-${(movieName.substring(0, 3)).toLowerCase()}" value="1" />
-                                        <label for="star1-${(movieName.substring(0, 3)).toLowerCase()}" title="text">1 star</label>
+                                        <input type="radio" id="star5-${result.toLowerCase()}" name="rate-${result.toLowerCase()}" value="5" />
+                                        <label for="star5-${result.toLowerCase()}" title="text">5 stars</label>
+                                        <input type="radio" id="star4-${result.toLowerCase()}" name="rate-${result.toLowerCase()}" value="4" />
+                                        <label for="star4-${result.toLowerCase()}" title="text">4 stars</label>
+                                        <input type="radio" id="star3-${result.toLowerCase()}" name="rate-${result.toLowerCase()}" value="3" />
+                                        <label for="star3-${result.toLowerCase()}" title="text">3 stars</label>
+                                        <input type="radio" id="star2-${result.toLowerCase()}" name="rate-${result.toLowerCase()}" value="2" />
+                                        <label for="star2-${result.toLowerCase()}" title="text">2 stars</label>
+                                        <input type="radio" id="star1-${result.toLowerCase()}" name="rate-${result.toLowerCase()}" value="1" />
+                                        <label for="star1-${result.toLowerCase()}" title="text">1 star</label>
                                     </div>
                                     <br>
                                     <button class="btn" onclick="getRating(this)">Rate!</button>`
     }
+}
+
+// Function for randomizing N characters for movie rating so when adding sequels for example, labels and radios won't overlap, hopefully.
+
+function getRandomMovieName(movieName, length) {
+    let result = ' ';
+    movieName = movieName.replace(/[^\w\s!?]/g, '');
+    const charactersLength = movieName.length;
+    for (let i = 0; i < length; i++) {
+        result += movieName.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
 }
 
 // Rating function
@@ -82,9 +98,13 @@ function getRating(element) {
 
 }
 
+// Function which creates HTML input element for adding a movie
+
 function addMovie() {
     let element = document.createElement('div');
     element.classList.add('add-movie');
+
+
 
     element.innerHTML = `<label for="movie-name">Movie name:</label><br>
                          <input type="text" id="movie-name" name="new-movie" placeholder="Movie name" size="30" required><br>
@@ -95,13 +115,14 @@ function addMovie() {
                          <label for="movie-price">Movie price ($):</label><br>
                          <input type="text" id="movie-price" name="new-movie" placeholder="Price" size="30" required><br><br>
                          <label for="movie-image">Upload movie cover:</label><br>
-                         <input type="file" id="file-input" name="new-movie" value="Upload image" required><br>
-                         <button type="button" onclick="uploadFile()">Upload file</button><br><br>
+                         <input type="file" id="image-input" name="new-movie" value="Upload image" accept="image/jpg" required><br>
                          <button class="btn" onclick="submitMovie()">Submit movie!</button>
                          `
 
     document.body.appendChild(element);
 }
+
+// Function that submits movie to the movie section
 
 function submitMovie() {
     let element = document.querySelector('.add-movie');
@@ -110,9 +131,18 @@ function submitMovie() {
     let movieLength = element.querySelector('input[id="movie-length"]').value;
     let moviePrice = element.querySelector('input[id="movie-price"]').value;
 
+    moviePrice = parseInt(moviePrice);
+    movieLength = parseInt(movieLength);
+    movieYear = parseInt(movieYear);
+
     let moviesDiv = document.querySelector('.movies');
     let newDiv = document.createElement('div');
-    newDiv.innerHTML = `<img src="images/endgame.jpg">
+
+    if (movieName !== '') {
+        if (movieYear >= 1900 && movieYear <= new Date().getFullYear()) {
+            if (movieLength >= 0) {
+                if (moviePrice >= 0) {
+                    newDiv.innerHTML = `<img id="output">
                         <div class="content">
                             <h3>${movieName} (${movieYear})</h3>
                             <p class="price">$${moviePrice}</p>
@@ -120,7 +150,20 @@ function submitMovie() {
                         </div>
                         <button class="btn" onclick="rentMovie(this)">Watch</button>
                         <div class="rate-section"></div>`;
-    newDiv.classList.add('single-movie');
+                    newDiv.classList.add('single-movie');
 
-    moviesDiv.appendChild(newDiv);
+                    moviesDiv.appendChild(newDiv);
+
+                    // Clearing inputs after submitting
+
+                    let inputs = document.querySelectorAll('input[id="movie-name"], input[id="movie-year"], input[id="movie-length"], input[id="movie-price"]');
+                    inputs.forEach(input => {
+                        input.value = '';
+                    });
+                }
+            }
+        }
+    }
 }
+
+// add a function to display uploaded image while adding the movie!

@@ -21,6 +21,7 @@ h3 {
 .single-movie .content h3 {
     display: flex;
     flex-direction: column;
+    white-space: initial;
 }
 
 h1 {
@@ -36,8 +37,7 @@ h1 {
 
 .single-movie {
     padding: 20px;
-    float: left;
-    display: inline;
+    display: inline-block;
 }
 
 .single-movie img {
