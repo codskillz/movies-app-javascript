@@ -5,7 +5,7 @@ let numOfRateElements = 0;
 
 function rentMovie(element) {
 
-    // Declaring variables
+    // Declaring letiables
     let mainElement = element.closest('.single-movie');
     let movieName = mainElement.querySelector('.content h3').innerText;
     let moviePrice = mainElement.querySelector('.price').innerText;
@@ -66,12 +66,13 @@ function showHTMLRating(movieName, showRating) {
 // Function for randomizing N characters for movie rating so when adding sequels for example, labels and radios won't overlap, hopefully.
 
 function getRandomMovieName(movieName, length) {
-    let result = ' ';
-    movieName = movieName.replace(/[^\w\s!?]/g, '');
+    let result = '';
     const charactersLength = movieName.length;
     for (let i = 0; i < length; i++) {
         result += movieName.charAt(Math.floor(Math.random() * charactersLength));
     }
+
+    result.replace(/[^\w\s!?]/g, '');
 
     return result;
 }
@@ -104,8 +105,6 @@ function addMovie() {
     let element = document.createElement('div');
     element.classList.add('add-movie');
 
-
-
     element.innerHTML = `<label for="movie-name">Movie name:</label><br>
                          <input type="text" id="movie-name" name="new-movie" placeholder="Movie name" size="30" required><br>
                          <label for="movie-year">Year released:</label><br>
@@ -114,8 +113,8 @@ function addMovie() {
                          <input type="text" id="movie-length" name="new-movie" placeholder="Length" size="30" required><br>
                          <label for="movie-price">Movie price ($):</label><br>
                          <input type="text" id="movie-price" name="new-movie" placeholder="Price" size="30" required><br><br>
-                         <label for="movie-image">Upload movie cover:</label><br>
-                         <input type="file" id="image-input" name="new-movie" value="Upload image" accept="image/jpg" required><br>
+                         <p><input type="file" accept="image/*" name="image" id="file" onchange="loadFile()" style="display: none;"></p>
+                         <p><label for="file" style="cursor: pointer;">Upload Image</label></p><br>
                          <button class="btn" onclick="submitMovie()">Submit movie!</button>
                          `
 
@@ -139,19 +138,19 @@ function submitMovie() {
     let newDiv = document.createElement('div');
 
     if (movieName !== '') {
-        if (movieYear >= 1900 && movieYear <= new Date().getFullYear()) {
+        if (movieYear >= 1902 && movieYear <= new Date().getFullYear()) {
             if (movieLength >= 0) {
                 if (moviePrice >= 0) {
-                    newDiv.innerHTML = `<img id="output">
-                        <div class="content">
-                            <h3>${movieName} (${movieYear})</h3>
-                            <p class="price">$${moviePrice}</p>
-                            <p class="mov-length">${movieLength} min.</p>
-                        </div>
-                        <button class="btn" onclick="rentMovie(this)">Watch</button>
-                        <div class="rate-section"></div>`;
-                    newDiv.classList.add('single-movie');
+                    newDiv.innerHTML = `<img src="${URL.createObjectURL(image)}">
+                                        <div class="content">
+                                            <h3>${movieName} (${movieYear})</h3>
+                                            <p class="price">$${moviePrice}</p>
+                                            <p class="mov-length">${movieLength} min.</p>
+                                        </div>
+                                        <button class="btn" onclick="rentMovie(this)">Watch</button>
+                                        <div class="rate-section"></div>`;
 
+                    newDiv.classList.add('single-movie');
                     moviesDiv.appendChild(newDiv);
 
                     // Clearing inputs after submitting
@@ -165,5 +164,3 @@ function submitMovie() {
         }
     }
 }
-
-// add a function to display uploaded image while adding the movie!
