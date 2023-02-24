@@ -3,6 +3,8 @@ let ukupniMinutesTotal = 0;
 let ratingTotal = 0;
 let numOfRateElements = 0;
 
+let AllString = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!";
+
 function rentMovie(element) {
 
     // Declaring letiables
@@ -44,7 +46,7 @@ function rentMovie(element) {
 function showHTMLRating(movieName, showRating) {
     if (movieName.includes(movieName.substring(0, movieName.length))) {
 
-        let result = getRandomMovieName(movieName, 5);
+        let result = getRandomName(movieName, 5);
 
         showRating.innerHTML = `<div class="rate">
                                         <input type="radio" id="star5-${result.toLowerCase()}" name="rate-${result.toLowerCase()}" value="5" />
@@ -65,14 +67,14 @@ function showHTMLRating(movieName, showRating) {
 
 // Function for randomizing N characters for movie rating so when adding sequels for example, labels and radios won't overlap, hopefully.
 
-function getRandomMovieName(movieName, length) {
+function getRandomName(movieName, length) {
     let result = '';
     const charactersLength = movieName.length;
     for (let i = 0; i < length; i++) {
         result += movieName.charAt(Math.floor(Math.random() * charactersLength));
     }
 
-    result.replace(/[^\w\s!?]/g, '');
+    result = result.replace(/[^\w\s+!?]/g, '');
 
     return result;
 }
@@ -113,12 +115,18 @@ function addMovie() {
                          <input type="text" id="movie-length" name="new-movie" placeholder="Length" size="30" required><br>
                          <label for="movie-price">Movie price ($):</label><br>
                          <input type="text" id="movie-price" name="new-movie" placeholder="Price" size="30" required><br><br>
-                         <p><input type="file" accept="image/*" name="image" id="file" onchange="loadFile()" style="display: none;"></p>
-                         <p><label for="file" style="cursor: pointer;">Upload Image</label></p><br>
                          <button class="btn" onclick="submitMovie()">Submit movie!</button>
                          `
 
     document.body.appendChild(element);
+}
+
+function uploadImg(e) {
+    let img = document.querySelector("#output");
+    img.src = URL.createObjectURL(e.target.files[0]);
+    img.id = `${getRandomName(AllString, 5).toLowerCase()}`
+
+    document.querySelector(".upload-img").remove();
 }
 
 // Function that submits movie to the movie section
@@ -141,7 +149,11 @@ function submitMovie() {
         if (movieYear >= 1902 && movieYear <= new Date().getFullYear()) {
             if (movieLength >= 0) {
                 if (moviePrice >= 0) {
-                    newDiv.innerHTML = `<img src="${URL.createObjectURL(image)}">
+                    newDiv.innerHTML = `<div class="upload-img">
+                                            <p><input type="file" accept="image/*" name="image" id="file" onchange="uploadImg(event)" style="display: none;"></p>
+                                            <p><label for="file" style="cursor: pointer;">Upload Image</label></p><br>
+                                        </div>
+                                        <img id="output">
                                         <div class="content">
                                             <h3>${movieName} (${movieYear})</h3>
                                             <p class="price">$${moviePrice}</p>
@@ -149,17 +161,17 @@ function submitMovie() {
                                         </div>
                                         <button class="btn" onclick="rentMovie(this)">Watch</button>
                                         <div class="rate-section"></div>`;
-
-                    newDiv.classList.add('single-movie');
-                    moviesDiv.appendChild(newDiv);
-
-                    // Clearing inputs after submitting
-
-                    let inputs = document.querySelectorAll('input[id="movie-name"], input[id="movie-year"], input[id="movie-length"], input[id="movie-price"]');
-                    inputs.forEach(input => {
-                        input.value = '';
-                    });
                 }
+
+                newDiv.classList.add('single-movie');
+                moviesDiv.appendChild(newDiv);
+
+                // Clearing inputs after submitting
+
+                let inputs = document.querySelectorAll('input[id="movie-name"], input[id="movie-year"], input[id="movie-length"], input[id="movie-price"]');
+                inputs.forEach(input => {
+                    input.value = '';
+                });
             }
         }
     }
